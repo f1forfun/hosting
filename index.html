@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Disfraces</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Logo del Grupo" class="logo">
+            <h1>Formulario de Elección de Disfraz</h1>
+        </header>
+        <form id="disfrazForm">
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" required>
+            </div>
+            <div class="form-group">
+                <label for="dni">DNI:</label>
+                <input type="text" id="dni" name="dni" required>
+            </div>
+
+            <div class="form-group">
+                <label for="disfraz">Selecciona tu disfraz:</label>
+                <select id="disfraz" name="disfraz" required>
+                    <option value="">-- Seleccionar --</option>
+                    <option value="jugador">Jugador Americano</option>
+                    <option value="jugadora">Jugadora Americana</option>
+                    <option value="cheerleader">Cheerleader</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="tallaGroup" style="display: none;">
+                <label for="talla">Selecciona tu talla:</label>
+                <select id="talla" name="talla">
+                    <!-- Las opciones se generan dinámicamente con JavaScript -->
+                </select>
+            </div>
+
+            <div class="form-group" id="accesoriosGroup" style="display: none;">
+                <label>Selecciona tus accesorios:</label>
+                <div id="accesoriosOptions">
+                    <!-- Opciones dinámicas -->
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const disfrazSelect = document.getElementById('disfraz');
+        const tallaGroup = document.getElementById('tallaGroup');
+        const tallaSelect = document.getElementById('talla');
+        const accesoriosGroup = document.getElementById('accesoriosGroup');
+        const accesoriosOptions = document.getElementById('accesoriosOptions');
+
+        const tallas = {
+            jugador: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
+            jugadora: ['S', 'M', 'L', 'XL', '2XL'],
+            cheerleader: ['S', 'M', 'L', 'XL']
+        };
+
+        const accesorios = {
+            jugador: ['Peluca naranja', 'Casco'],
+            jugadora: ['Peluca naranja', 'Casco'],
+            cheerleader: ['Peluca y pompones']
+        };
+
+        disfrazSelect.addEventListener('change', () => {
+            const selectedDisfraz = disfrazSelect.value;
+
+            if (selectedDisfraz) {
+                tallaGroup.style.display = 'block';
+                tallaSelect.innerHTML = tallas[selectedDisfraz]
+                    .map(talla => `<option value="${talla}">${talla}</option>`)
+                    .join('');
+
+                accesoriosGroup.style.display = 'block';
+                accesoriosOptions.innerHTML = accesorios[selectedDisfraz]
+                    .map(acc => `<label><input type="checkbox" name="accesorios" value="${acc}"> ${acc}</label>`)
+                    .join('');
+
+                if (selectedDisfraz === 'cheerleader') {
+                    accesoriosOptions.querySelectorAll('input').forEach(input => {
+                        input.checked = true;
+                        input.disabled = true;
+                    });
+                }
+            } else {
+                tallaGroup.style.display = 'none';
+                accesoriosGroup.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
